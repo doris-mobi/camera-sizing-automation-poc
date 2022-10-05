@@ -1,0 +1,10 @@
+.text {
+  z-index: 2;
+  position: absolute;
+  font-size: 20vmin;
+  font-weight: bold;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+}
