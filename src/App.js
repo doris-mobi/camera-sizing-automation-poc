@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import Webcam from "react-webcam";
 
 import { ImageSlots } from "./components/ImageSlot";
 import { ImageStatus } from "./components/ImageStatus";
@@ -7,29 +8,26 @@ import { Timer } from "./components/Timer";
 import "./global.css";
 
 const App = () => {
-  const [isValidating, setIsValidating] = useState(true);
-  const [firstSlotImage, setFirstSlotImage] = useState(
-    "https://via.placeholder.com/150&text=1"
-  );
-  const [secondSlotImage, setSecondSlotImage] = useState(
-    "https://via.placeholder.com/150&text=2"
-  );
-  const [thirdSlotImage, setThirdSlotImage] = useState(undefined);
+  const webcamRef = useRef(null);
 
+  const [isValidating, setIsValidating] = useState(true);
+  const [slotA, setSlotA] = useState("https://via.placeholder.com/150&text=1");
+  const [slotB, setSlotB] = useState("https://via.placeholder.com/150&text=2");
+  const [slotC, setSlotC] = useState(undefined);
   const [timer, setTimer] = useState(0);
 
   const setImageToSlot = (slot, image) => {
     if (slot === 1) {
-      setFirstSlotImage(image);
+      setSlotA(image);
       return;
     }
 
     if (slot === 2) {
-      setSecondSlotImage(image);
+      setSlotB(image);
       return;
     }
 
-    setThirdSlotImage(image);
+    setSlotC(image);
   };
 
   const toggleState = () => {
@@ -39,19 +37,34 @@ const App = () => {
 
   return (
     <>
-      <ImageSlots
-        firstSlot={firstSlotImage}
-        secondSlot={secondSlotImage}
-        thirdSlot={thirdSlotImage}
-      />
+      <ImageSlots firstSlot={slotA} secondSlot={slotB} thirdSlot={slotC} />
       {!isValidating && timer && <Timer />}
       {isValidating && !timer && <ImageStatus pose="A" />}
       <button
         onClick={toggleState}
-        style={{ position: "absolute", right: "2vmin", bottom: "2vmin" }}
+        style={{
+          position: "absolute",
+          right: "2vmin",
+          bottom: "2vmin",
+          zIndex: 2,
+        }}
       >
         TOGGLE STATE
       </button>
+      <Webcam
+        ref={webcamRef}
+        style={{
+          position: "absolute",
+          marginLeft: "auto",
+          marginRight: "auto",
+          left: 0,
+          right: 0,
+          textAlign: "center",
+          zIndex: 1,
+          width: "100%",
+          height: "100%",
+        }}
+      />
     </>
   );
 };
