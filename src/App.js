@@ -6,6 +6,7 @@ import "@tensorflow/tfjs-backend-webgl";
 import { ImageSlots } from "./components/ImageSlot";
 import { ImageStatus } from "./components/ImageStatus";
 import { Timer } from "./components/Timer";
+import { MINIMUM_SCORE } from "./constants";
 
 import "./global.css";
 
@@ -46,6 +47,11 @@ const App = () => {
       video.height = videoHeight;
 
       const pose = await posenetModel.estimateSinglePose(video);
+
+      if (pose.score < MINIMUM_SCORE) {
+        console.error(`LOW SCORE (UNDER ${MINIMUM_SCORE})`);
+        return;
+      }
 
       console.log(pose);
     }
