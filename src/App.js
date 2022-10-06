@@ -33,7 +33,7 @@ const App = () => {
     setSlotC(image);
   };
 
-  const detectWebcamFeed = async (posenetModel) => {
+  const validateWebcamFeed = async (posenetModel) => {
     if (
       typeof webcamRef.current !== "undefined" &&
       webcamRef.current !== null &&
@@ -55,7 +55,6 @@ const App = () => {
         return;
       }
 
-      console.log(pose);
       setIsValidating(false);
       setTimer(true);
     }
@@ -69,7 +68,7 @@ const App = () => {
       });
 
       setInterval(() => {
-        detectWebcamFeed(posenetModel);
+        validateWebcamFeed(posenetModel);
       }, 1000);
     } catch (error) {
       console.log({ error });
