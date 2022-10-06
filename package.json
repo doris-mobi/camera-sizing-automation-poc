@@ -19,7 +19,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "heroku:login": "heroku git:remote -a camera-sizing-automation-poc",
+    "deploy": "git push heroku main"
   },
   "eslintConfig": {
     "extends": [
