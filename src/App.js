@@ -8,7 +8,29 @@ import "./global.css";
 
 const App = () => {
   const [isValidating, setIsValidating] = useState(true);
+  const [firstSlotImage, setFirstSlotImage] = useState(
+    "https://via.placeholder.com/150&text=1"
+  );
+  const [secondSlotImage, setSecondSlotImage] = useState(
+    "https://via.placeholder.com/150&text=2"
+  );
+  const [thirdSlotImage, setThirdSlotImage] = useState(undefined);
+
   const [timer, setTimer] = useState(0);
+
+  const setImageToSlot = (slot, image) => {
+    if (slot === 1) {
+      setFirstSlotImage(image);
+      return;
+    }
+
+    if (slot === 2) {
+      setSecondSlotImage(image);
+      return;
+    }
+
+    setThirdSlotImage(image);
+  };
 
   const toggleState = () => {
     setIsValidating(!isValidating);
@@ -18,9 +40,9 @@ const App = () => {
   return (
     <>
       <ImageSlots
-        firstSlot="https://via.placeholder.com/150&text=1"
-        secondSlot="https://via.placeholder.com/150&text=2"
-        // thirdSlot="https://via.placeholder.com/150&text=3"
+        firstSlot={firstSlotImage}
+        secondSlot={secondSlotImage}
+        thirdSlot={thirdSlotImage}
       />
       {!isValidating && timer && <Timer />}
       {isValidating && !timer && <ImageStatus pose="A" />}
