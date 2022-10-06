@@ -1,5 +1,7 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Webcam from "react-webcam";
+import * as posenet from "@tensorflow-models/posenet";
+import "@tensorflow/tfjs-backend-webgl";
 
 import { ImageSlots } from "./components/ImageSlot";
 import { ImageStatus } from "./components/ImageStatus";
@@ -30,10 +32,50 @@ const App = () => {
     setSlotC(image);
   };
 
+  const detectWebcamFeed = async (posenetModel) => {
+    if (
+      typeof webcamRef.current !== "undefined" &&
+      webcamRef.current !== null &&
+      webcamRef.current.video.readyState === 4
+    ) {
+      const video = webcamRef.current.video;
+      const videoWidth = video.videoWidth;
+      const videoHeight = video.videoHeight;
+
+      video.width = videoWidth;
+      video.height = videoHeight;
+
+      const pose = await posenetModel.estimateSinglePose(video);
+
+      console.log(pose);
+    }
+  };
+
+  const runPosenet = async () => {
+    try {
+      const posenetModel = await posenet.load({
+        inputResolution: { width: 640, height: 480 },
+        scale: 0.8,
+      });
+
+      setInterval(() => {
+        detectWebcamFeed(posenetModel);
+      }, 1000);
+    } catch (error) {
+      console.log({ error });
+    }
+  };
+
   const toggleState = () => {
     setIsValidating(!isValidating);
     setTimer(!timer);
   };
+
+  useEffect(() => {
+    runPosenet();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
