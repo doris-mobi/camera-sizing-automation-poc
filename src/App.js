@@ -50,10 +50,14 @@ const App = () => {
 
       if (pose.score < MINIMUM_SCORE) {
         console.error(`LOW SCORE (UNDER ${MINIMUM_SCORE})`);
+        setIsValidating(true);
+        setTimer(false);
         return;
       }
 
       console.log(pose);
+      setIsValidating(false);
+      setTimer(true);
     }
   };
 
