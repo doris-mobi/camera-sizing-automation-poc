@@ -10,6 +10,8 @@ import { MINIMUM_SCORE } from "./constants";
 
 import "./global.css";
 
+const DEBUG = false;
+
 const App = () => {
   const webcamRef = useRef(null);
 
@@ -91,17 +93,19 @@ const App = () => {
       <ImageSlots firstSlot={slotA} secondSlot={slotB} thirdSlot={slotC} />
       {!isValidating && timer && <Timer />}
       {isValidating && !timer && <ImageStatus pose="A" />}
-      <button
-        onClick={toggleState}
-        style={{
-          position: "absolute",
-          right: "2vmin",
-          bottom: "2vmin",
-          zIndex: 2,
-        }}
-      >
-        TOGGLE STATE
-      </button>
+      {DEBUG && (
+        <button
+          onClick={toggleState}
+          style={{
+            position: "absolute",
+            right: "2vmin",
+            bottom: "2vmin",
+            zIndex: 2,
+          }}
+        >
+          TOGGLE STATE
+        </button>
+      )}
       <Webcam
         ref={webcamRef}
         style={{
