@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Webcam from "react-webcam";
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
@@ -22,10 +22,16 @@ const App = () => {
   const webcamRef = useRef(null);
 
   const [isValidating, setIsValidating] = useState(true);
-  const [slotA, setSlotA] = useState("https://via.placeholder.com/150&text=1");
-  const [slotB, setSlotB] = useState("https://via.placeholder.com/150&text=2");
+  const [slotA, setSlotA] = useState(undefined);
+  const [slotB, setSlotB] = useState(undefined);
   const [slotC, setSlotC] = useState(undefined);
   const [timer, setTimer] = useState(0);
+  const [currentPosition, setCurrentPosition] = useState("A");
+
+  const captureImage = useCallback(() => {
+    const base64Image = webcamRef.current.getScreenshot();
+    return base64Image;
+  }, [webcamRef]);
 
   const setImageToSlot = (slot, image) => {
     if (slot === 1) {
@@ -59,6 +65,10 @@ const App = () => {
       if (!validateHandsDownFrontPhoto(pose).valid) {
         setIsValidating(true);
         setTimer(false);
+
+        const photo = captureImage();
+        setSlotA(photo);
+
         return;
       }
 

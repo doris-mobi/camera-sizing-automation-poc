@@ -5,7 +5,8 @@
   bottom: 10px;
   display: inline-grid;
   column-gap: 5px;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: auto auto auto;
+  align-items: end;
 }
 
 .image,
@@ -29,4 +30,9 @@
 
 .image {
   object-fit: cover;
+}
+
+.image:hover {
+  width: 200px;
+  height: 300px;
 }
