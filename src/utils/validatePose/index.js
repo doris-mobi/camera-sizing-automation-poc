@@ -1,15 +1,24 @@
 import { MINIMUM_SCORE, MAX_NEAR_ARMS_DISTANCE } from "../../constants";
 
-export const compareDistance = (reference, value) => {
+export const getProportion = (reference, value) => {
   return (value * 100) / reference / 100;
+};
+
+export const validateGeneralScore = (pose) => {
+  if (pose.score < MINIMUM_SCORE) {
+    console.error(`LOW SCORE (UNDER ${MINIMUM_SCORE})`);
+    return false;
+  }
+
+  return true;
 };
 
 export const validateHandsDownFrontPhoto = (pose) => {
   const result = { valid: false, score: pose.score };
 
-  if (pose.score < MINIMUM_SCORE) {
+  if (!validateGeneralScore(pose)) {
+    console.log("d");
     result.valid = false;
-    result.score = pose.score;
     return result;
   }
 
@@ -19,13 +28,15 @@ export const validateHandsDownFrontPhoto = (pose) => {
   const rightWrist = pose.keypoints[10];
   const hipWidth = leftHip.position.x - rightHip.position.x;
   const leftWristDistanceFromHip = leftWrist.position.x - leftHip.position.x;
+  const rightWristDistanceFromHip = rightHip.position.x - rightWrist.position.x;
 
-  console.log(compareDistance(hipWidth, leftWristDistanceFromHip));
+  const isLeftSideOk =
+    getProportion(hipWidth, leftWristDistanceFromHip) <= MAX_NEAR_ARMS_DISTANCE;
+  const isRightSideOk =
+    getProportion(hipWidth, rightWristDistanceFromHip) <=
+    MAX_NEAR_ARMS_DISTANCE;
 
-  if (
-    compareDistance(hipWidth, leftWristDistanceFromHip) <=
-    MAX_NEAR_ARMS_DISTANCE
-  ) {
+  if (isLeftSideOk && isRightSideOk) {
     result.valid = true;
   }
 

@@ -3,6 +3,7 @@ import Webcam from "react-webcam";
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
 
+import { validateHandsDownFrontPhoto } from "./utils/validatePose";
 import { ImageSlots } from "./components/ImageSlot";
 import { ImageStatus } from "./components/ImageStatus";
 import { Timer } from "./components/Timer";
@@ -50,8 +51,7 @@ const App = () => {
 
       const pose = await posenetModel.estimateSinglePose(video);
 
-      if (pose.score < MINIMUM_SCORE) {
-        console.error(`LOW SCORE (UNDER ${MINIMUM_SCORE})`);
+      if (!validateHandsDownFrontPhoto(pose).valid) {
         setIsValidating(true);
         setTimer(false);
         return;
