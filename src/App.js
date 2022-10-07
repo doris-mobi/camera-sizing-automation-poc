@@ -12,6 +12,11 @@ import { MINIMUM_SCORE } from "./constants";
 import "./global.css";
 
 const DEBUG = false;
+const positionMap = {
+  A: "Front + Near Arms",
+  B: "Sideways",
+  C: "Front + Open Arms",
+};
 
 const App = () => {
   const webcamRef = useRef(null);
@@ -90,6 +95,20 @@ const App = () => {
 
   return (
     <>
+      <span
+        style={{
+          padding: "10px",
+          backgroundColor: "black",
+          color: "yellow",
+          fontSize: "10px",
+          zIndex: 3,
+          position: "absolute",
+          top: 0,
+          left: 0,
+        }}
+      >
+        Current Position: {positionMap[currentPosition]}
+      </span>
       <ImageSlots firstSlot={slotA} secondSlot={slotB} thirdSlot={slotC} />
       {!isValidating && timer && <Timer />}
       {isValidating && !timer && <ImageStatus pose="A" />}
