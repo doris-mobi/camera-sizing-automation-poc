@@ -2,6 +2,7 @@ import { MINIMUM_SCORE } from "../../constants";
 
 import {
   validateHandsDownFrontPhoto,
+  validPoseOpenArmsPhoto,
   getProportion,
   validateGeneralScore,
 } from ".";
@@ -59,6 +60,30 @@ describe("The validateHandsDownFrontPhoto util", () => {
     expect(result).toStrictEqual({
       valid: true,
       score: pose.validPoseHandsDown.score,
+    });
+  });
+});
+
+describe("The validPoseOpenArmsPhoto util", () => {
+  it("should approve a valid pose", () => {
+    const input = { ...pose.validPoseOpenArms };
+
+    const result = validPoseOpenArmsPhoto(input);
+
+    expect(result).toStrictEqual({
+      valid: true,
+      score: pose.validPoseOpenArms.score,
+    });
+  });
+
+  it("should reject when arms are too open", () => {
+    const input = { ...pose.armsTooOpen };
+
+    const result = validPoseOpenArmsPhoto(input);
+
+    expect(result).toStrictEqual({
+      valid: false,
+      score: pose.armsTooOpen.score,
     });
   });
 });

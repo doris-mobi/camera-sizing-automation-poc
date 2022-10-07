@@ -3,7 +3,10 @@ import Webcam from "react-webcam";
 import * as posenet from "@tensorflow-models/posenet";
 import "@tensorflow/tfjs-backend-webgl";
 
-import { validateHandsDownFrontPhoto } from "./utils/validatePose";
+import {
+  validateHandsDownFrontPhoto,
+  validPoseOpenArmsPhoto,
+} from "./utils/validatePose";
 import { ImageSlots } from "./components/ImageSlot";
 import { ImageStatus } from "./components/ImageStatus";
 import { Timer } from "./components/Timer";
@@ -12,6 +15,7 @@ import { MINIMUM_SCORE } from "./constants";
 import "./global.css";
 
 const DEBUG = false;
+const VALIDATION_INTERVAL = 2000;
 const positionMap = {
   A: "Front + Near Arms",
   B: "Sideways",
