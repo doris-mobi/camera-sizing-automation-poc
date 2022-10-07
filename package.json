@@ -19,6 +19,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:watch": "react-scripts test --watch",
     "heroku:login": "heroku git:remote -a camera-sizing-automation-poc",
     "deploy": "git push heroku main"
   },
