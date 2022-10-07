@@ -118,12 +118,14 @@ export const validateSidePhoto = (pose) => {
   const averageTrunkWidth = (upperbodyWidth + lowerBodyWidth) / 2;
   const bodyHeight = leftHip.position.y - leftShoulder.position.y;
 
-  // console.log({
-  //   upperbodyWidth: upperbodyWidth,
-  //   lowerBodyWidth: lowerBodyWidth,
-  //   averageTrunkWidth: averageTrunkWidth,
-  //   bodyHeight: bodyHeight,
-  // });
+  console.log({
+    upperbodyWidth: upperbodyWidth,
+    lowerBodyWidth: lowerBodyWidth,
+    averageTrunkWidth: averageTrunkWidth,
+    bodyHeight: bodyHeight,
+  });
+
+  console.log(bodyHeight / averageTrunkWidth / 100)
 
   if (bodyHeight / averageTrunkWidth / 100 <= SIDEWAYS_BODY_MAXIMUM_RATIO) {
     result.valid = true;

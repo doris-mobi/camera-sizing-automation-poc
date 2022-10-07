@@ -71,20 +71,20 @@ const App = () => {
       const pose = await posenetModel.estimateSinglePose(video);
 
       console.log("");
-      // console.log({
-      //   position: positionMap["A"],
-      //   valid: validateHandsDownFrontPhoto(pose).valid,
-      // });
+      console.log({
+        position: positionMap["A"],
+        valid: validateHandsDownFrontPhoto(pose).valid,
+      });
       setIsTypeAValid(validateHandsDownFrontPhoto(pose).valid);
-      // console.log({
-      //   position: positionMap["B"],
-      //   valid: validateSidePhoto(pose).valid,
-      // });
+      console.log({
+        position: positionMap["B"],
+        valid: validateSidePhoto(pose).valid,
+      });
       setIsTypeBValid(validateSidePhoto(pose).valid);
-      // console.log({
-      //   position: positionMap["C"],
-      //   valid: validPoseOpenArmsPhoto(pose).valid,
-      // });
+      console.log({
+        position: positionMap["C"],
+        valid: validPoseOpenArmsPhoto(pose).valid,
+      });
       setIsTypeCValid(validPoseOpenArmsPhoto(pose).valid);
       console.log("");
 
