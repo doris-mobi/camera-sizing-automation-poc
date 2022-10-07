@@ -10,7 +10,6 @@ import {
 import { ImageSlots } from "./components/ImageSlot";
 import { ImageStatus } from "./components/ImageStatus";
 import { Timer } from "./components/Timer";
-import { MINIMUM_SCORE } from "./constants";
 
 import "./global.css";
 
@@ -66,18 +65,37 @@ const App = () => {
 
       const pose = await posenetModel.estimateSinglePose(video);
 
-      if (!validateHandsDownFrontPhoto(pose).valid) {
-        setIsValidating(true);
-        setTimer(false);
+      console.log("");
+      console.log({
+        position: positionMap["A"],
+        valid: validateHandsDownFrontPhoto(pose).valid,
+      });
+      console.log({
+        position: positionMap["C"],
+        valid: validPoseOpenArmsPhoto(pose).valid,
+      });
+      console.log("");
 
-        const photo = captureImage();
-        setSlotA(photo);
+      // if (currentPosition === "A" && !validateHandsDownFrontPhoto(pose).valid) {
 
-        return;
-      }
+      //   setIsValidating(true);
+      //   setTimer(false);
 
-      setIsValidating(false);
-      setTimer(true);
+      //   const photo = captureImage();
+      //   setSlotA(photo);
+
+      //   return;
+      // }
+
+      // if (currentPosition === "B" && !validPoseOpenArmsPhoto(pose).valid) {
+      //   setIsValidating(true);
+      //   setTimer(false);
+
+      //   const photo = captureImage();
+      //   setSlotA(photo);
+
+      //   return;
+      // }
     }
   };
 
@@ -90,7 +108,7 @@ const App = () => {
 
       setInterval(() => {
         validateWebcamFeed(posenetModel);
-      }, 1000);
+      }, VALIDATION_INTERVAL);
     } catch (error) {
       console.log({ error });
     }
@@ -106,6 +124,13 @@ const App = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    setTimer(false);
+    setIsValidating(true);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPosition]);
 
   return (
     <>
