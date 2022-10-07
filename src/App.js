@@ -6,6 +6,7 @@ import "@tensorflow/tfjs-backend-webgl";
 import {
   validateHandsDownFrontPhoto,
   validPoseOpenArmsPhoto,
+  validateSidePhoto,
 } from "./utils/validatePose";
 import { ImageSlots } from "./components/ImageSlot";
 import { ImageStatus } from "./components/ImageStatus";
@@ -30,6 +31,10 @@ const App = () => {
   const [slotC, setSlotC] = useState(undefined);
   const [timer, setTimer] = useState(0);
   const [currentPosition, setCurrentPosition] = useState("A");
+
+  const [isTypeAValid, setIsTypeAValid] = useState(false);
+  const [isTypeBValid, setIsTypeBValid] = useState(false);
+  const [isTypeCValid, setIsTypeCValid] = useState(false);
 
   const captureImage = useCallback(() => {
     const base64Image = webcamRef.current.getScreenshot();
@@ -66,14 +71,21 @@ const App = () => {
       const pose = await posenetModel.estimateSinglePose(video);
 
       console.log("");
-      console.log({
-        position: positionMap["A"],
-        valid: validateHandsDownFrontPhoto(pose).valid,
-      });
-      console.log({
-        position: positionMap["C"],
-        valid: validPoseOpenArmsPhoto(pose).valid,
-      });
+      // console.log({
+      //   position: positionMap["A"],
+      //   valid: validateHandsDownFrontPhoto(pose).valid,
+      // });
+      setIsTypeAValid(validateHandsDownFrontPhoto(pose).valid);
+      // console.log({
+      //   position: positionMap["B"],
+      //   valid: validateSidePhoto(pose).valid,
+      // });
+      setIsTypeBValid(validateSidePhoto(pose).valid);
+      // console.log({
+      //   position: positionMap["C"],
+      //   valid: validPoseOpenArmsPhoto(pose).valid,
+      // });
+      setIsTypeCValid(validPoseOpenArmsPhoto(pose).valid);
       console.log("");
 
       // if (currentPosition === "A" && !validateHandsDownFrontPhoto(pose).valid) {
@@ -146,7 +158,11 @@ const App = () => {
           left: 0,
         }}
       >
-        Current Position: {positionMap[currentPosition]}
+        {positionMap["A"]}: {isTypeAValid ? "✅ " : "❌"}
+        <br />
+        {positionMap["B"]}: {isTypeBValid ? "✅ " : "❌"}
+        <br />
+        {positionMap["C"]}: {isTypeCValid ? "✅ " : "❌"}
       </span>
       <ImageSlots firstSlot={slotA} secondSlot={slotB} thirdSlot={slotC} />
       {!isValidating && timer && <Timer />}

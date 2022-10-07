@@ -1,4 +1,9 @@
-import { MINIMUM_SCORE, MAX_NEAR_ARMS_DISTANCE, OPEN_ARMS_MAX_DISTANCE_FROM_SHOULDER } from "../../constants";
+import {
+  MINIMUM_SCORE,
+  MAX_NEAR_ARMS_DISTANCE,
+  OPEN_ARMS_MAX_DISTANCE_FROM_SHOULDER,
+  SIDEWAYS_BODY_MAXIMUM_RATIO,
+} from "../../constants";
 
 export const getProportion = (reference, value) => {
   return (value * 100) / reference / 100;
@@ -67,9 +72,11 @@ export const validPoseOpenArmsPhoto = (pose) => {
   // const leftWristDistanceFromLeftShoulder = getProportion(bodyHeight, leftWristDistanceFromHip)
 
   const isRightWristUnderChest =
-    getProportion(bodyHeight, rightWristDistanceFromLeftShoulder) >= OPEN_ARMS_MAX_DISTANCE_FROM_SHOULDER;
+    getProportion(bodyHeight, rightWristDistanceFromLeftShoulder) >=
+    OPEN_ARMS_MAX_DISTANCE_FROM_SHOULDER;
   const isLeftWristUnderChest =
-    getProportion(bodyHeight, leftWristDistanceFromLeftShoulder) >= OPEN_ARMS_MAX_DISTANCE_FROM_SHOULDER;
+    getProportion(bodyHeight, leftWristDistanceFromLeftShoulder) >=
+    OPEN_ARMS_MAX_DISTANCE_FROM_SHOULDER;
   const isLeftHandFromHipOk =
     getProportion(hipWidth, leftWristDistanceFromHip) >= MAX_NEAR_ARMS_DISTANCE;
   const isRightHandFromHipOk =
@@ -82,6 +89,43 @@ export const validPoseOpenArmsPhoto = (pose) => {
     isLeftHandFromHipOk &&
     isRightHandFromHipOk
   ) {
+    result.valid = true;
+  }
+
+  return result;
+};
+
+const makePositive = (value) => {
+  if (value < 0) {
+    return value * -1;
+  }
+
+  return value;
+};
+
+export const validateSidePhoto = (pose) => {
+  const result = { valid: false, score: pose.score };
+
+  const leftShoulder = pose.keypoints[5];
+  const rightShoulder = pose.keypoints[6];
+  const leftHip = pose.keypoints[11];
+  const rightHip = pose.keypoints[12];
+
+  const upperbodyWidth = makePositive(
+    leftShoulder.position.x - rightShoulder.position.x
+  );
+  const lowerBodyWidth = makePositive(leftHip.position.x - rightHip.position.x);
+  const averageTrunkWidth = (upperbodyWidth + lowerBodyWidth) / 2;
+  const bodyHeight = leftHip.position.y - leftShoulder.position.y;
+
+  // console.log({
+  //   upperbodyWidth: upperbodyWidth,
+  //   lowerBodyWidth: lowerBodyWidth,
+  //   averageTrunkWidth: averageTrunkWidth,
+  //   bodyHeight: bodyHeight,
+  // });
+
+  if (bodyHeight / averageTrunkWidth / 100 <= SIDEWAYS_BODY_MAXIMUM_RATIO) {
     result.valid = true;
   }
 
