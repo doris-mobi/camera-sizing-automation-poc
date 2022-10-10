@@ -151,18 +151,18 @@ const App = () => {
           padding: "10px",
           backgroundColor: "black",
           color: "yellow",
-          fontSize: "10px",
+          fontSize: "12px",
           zIndex: 3,
           position: "absolute",
           top: 0,
           left: 0,
         }}
       >
-        {positionMap["A"]}: {isTypeAValid ? "✅ " : "❌"}
+        {isTypeAValid ? "✅ " : "❌"} {positionMap["A"]}
         <br />
-        {positionMap["B"]}: {isTypeBValid ? "✅ " : "❌"}
+        {isTypeBValid ? "✅ " : "❌"} {positionMap["B"]}
         <br />
-        {positionMap["C"]}: {isTypeCValid ? "✅ " : "❌"}
+        {isTypeCValid ? "✅ " : "❌"} {positionMap["C"]}
       </span>
       {/* <ImageSlots firstSlot={slotA} secondSlot={slotB} thirdSlot={slotC} /> */}
       {/* {!isValidating && timer && <Timer />} */}
