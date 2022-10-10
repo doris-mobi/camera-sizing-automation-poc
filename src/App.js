@@ -164,9 +164,9 @@ const App = () => {
         <br />
         {positionMap["C"]}: {isTypeCValid ? "✅ " : "❌"}
       </span>
-      <ImageSlots firstSlot={slotA} secondSlot={slotB} thirdSlot={slotC} />
-      {!isValidating && timer && <Timer />}
-      {isValidating && !timer && <ImageStatus pose="A" />}
+      {/* <ImageSlots firstSlot={slotA} secondSlot={slotB} thirdSlot={slotC} /> */}
+      {/* {!isValidating && timer && <Timer />} */}
+      {/* {isValidating && !timer && <ImageStatus pose="A" />} */}
       {DEBUG && (
         <button
           onClick={toggleState}
