@@ -5,7 +5,7 @@ import { ImageCounter } from "./components/ImageCounter";
 
 import "./global.css";
 
-const VALIDATION_INTERVAL = process.env.VALIDATION_INTERVAL;
+const VALIDATION_INTERVAL = process.env.REACT_APP_VALIDATION_INTERVAL;
 
 const App = () => {
   const webcamRef = useRef(null);
