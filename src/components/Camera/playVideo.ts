@@ -3,12 +3,12 @@ export const playVideo = (video: HTMLVideoElement) => {
 
   if (playPromise !== undefined) {
     playPromise
-      .then(_ => {
+      .then(() => {
         // Automatic playback started!
         // Show playing UI.
         // We can now safely pause video...
       })
-      .catch(_error => {
+      .catch(() => {
         // Auto-play was prevented
         // Show paused UI.
       })

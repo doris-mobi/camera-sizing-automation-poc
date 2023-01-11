@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/media-has-caption */
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import * as poseDetection from '@tensorflow-models/pose-detection'
@@ -34,6 +35,8 @@ export const Camera: React.FC = () => {
     if (!video) return
 
     const poses = await detector.estimatePoses(video)
+    if (!poses.length) return
+
     const pose = poses[0]
 
     const leftElbowAngle = calculateAngle(
@@ -67,31 +70,26 @@ export const Camera: React.FC = () => {
     )
 
     if (leftElbowAngle < LEFT_ELBOW_ANGLE_MIN_LIMIT || leftElbowAngle > LEFT_ELBOW_ANGLE_MAX_LIMIT) {
-      console.log('arms very close')
       setPoseValid(false)
       return
     }
 
     if (rightElbowAngle < RIGHT_ELBOW_ANGLE_MIN_LIMIT || rightElbowAngle > RIGHT_ELBOW_ANGLE_MAX_LIMIT) {
-      console.log('arms too far apart')
       setPoseValid(false)
       return
     }
 
     if (leftShoulderAngle < LEFT_SHOULDER_ANGLE_MIN_LIMIT || leftShoulderAngle > LEFT_SHOULDER_ANGLE_MAX_LIMIT) {
-      console.log('your shoulders should be straight')
       setPoseValid(false)
       return
     }
 
     if (leftKneeAngle < LEFT_KNEE_ANGLE_MIN_LIMIT || leftKneeAngle > LEFT_KNEE_ANGLE_MAX_LIMIT) {
-      console.log('legs too far apart')
       setPoseValid(false)
       return
     }
 
     if (rightKneeAngle < RIGHT_KNEE_ANGLE_MIN_LIMIT || rightKneeAngle > RIGHT_KNEE_ANGLE_MAX_LIMIT) {
-      console.log('legs very close')
       setPoseValid(false)
       return
     }
@@ -125,10 +123,14 @@ export const Camera: React.FC = () => {
 
   return (
     <>
-      <h1 className="pose-status" style={{ color: poseValid ? 'green' : 'red' }}>
-        {poseValid ? '😎 POSE VALIDA CARAI 😎' : '⚠️ POSE INVALIDA ⚠️'}
-      </h1>
-      <video width={1024} height={768} ref={videoRef} />
+      <div className="container">
+        <div className="gradient">
+          <h1 className="pose-status" style={{ color: poseValid ? 'white' : 'white' }}>
+            {poseValid ? 'Pose válida 😎' : 'Pose inválida 🤬'}
+          </h1>
+        </div>
+        <video id="camera" ref={videoRef} />
+      </div>
     </>
   )
 }
