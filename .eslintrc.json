@@ -1,0 +1,63 @@
+{
+  "root": true,
+  "env": {
+    "es6": true,
+    "browser": true,
+    "jest": true,
+    "node": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "extends": [
+    "prettier",
+    "eslint:recommended",
+    "plugin:import/errors",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": ["react", "import", "jsx-a11y", "@typescript-eslint", "jest"],
+  "rules": {
+    "no-console": "warn",
+    "react/self-closing-comp": "warn",
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+    "@typescript-eslint/no-var-requires": 0,
+    "no-async-promise-executor": "off",
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        "selector": "typeLike",
+        "format": ["PascalCase"]
+      },
+      {
+        "selector": "enum",
+        "format": ["UPPER_CASE", "PascalCase"],
+        "trailingUnderscore": "allow"
+      },
+      {
+        "selector": "enumMember",
+        "format": ["UPPER_CASE", "PascalCase"],
+        "trailingUnderscore": "allow"
+      }
+    ]
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }
+}

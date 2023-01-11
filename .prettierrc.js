@@ -1,0 +1,21 @@
+module.exports = {
+  singleQuote: true,
+  trailingComma: 'all',
+  arrowParens: 'avoid',
+  semi: false,
+  printWidth: 120,
+  importOrder: [
+    '^react',
+    '^@(.*)$',
+    '^~/hooks(.*)$',
+    '^~/context(.*)$',
+    '^~/components(.*)$',
+    '^~/theme(.*)$',
+    '^~/graphql(.*)$',
+    '^["~/(*)"]',
+    '^["."]',
+  ],
+  importOrderSeparation: true,
+  importOrderSortSpecifiers: true,
+  importOrderGroupNamespaceSpecifiers: true,
+}
