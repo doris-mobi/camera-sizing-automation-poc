@@ -8,20 +8,20 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import './styles.css'
 
 import { playVideo } from './playVideo'
-// import {
-//   LEFT_ELBOW_ANGLE_MAX_LIMIT,
-//   LEFT_ELBOW_ANGLE_MIN_LIMIT,
-//   LEFT_KNEE_ANGLE_MAX_LIMIT,
-//   LEFT_KNEE_ANGLE_MIN_LIMIT,
-//   LEFT_SHOULDER_ANGLE_MAX_LIMIT,
-//   LEFT_SHOULDER_ANGLE_MIN_LIMIT,
-//   poseLandmarks,
-//   RIGHT_ELBOW_ANGLE_MAX_LIMIT,
-//   RIGHT_ELBOW_ANGLE_MIN_LIMIT,
-//   RIGHT_KNEE_ANGLE_MAX_LIMIT,
-//   RIGHT_KNEE_ANGLE_MIN_LIMIT,
-// } from '../../lib/pose-detection/constants'
-// import { calculateAngle } from '../../lib/pose-detection/utils'
+import {
+  LEFT_ELBOW_ANGLE_MAX_LIMIT,
+  LEFT_ELBOW_ANGLE_MIN_LIMIT,
+  LEFT_KNEE_ANGLE_MAX_LIMIT,
+  LEFT_KNEE_ANGLE_MIN_LIMIT,
+  LEFT_SHOULDER_ANGLE_MAX_LIMIT,
+  LEFT_SHOULDER_ANGLE_MIN_LIMIT,
+  poseLandmarks,
+  RIGHT_ELBOW_ANGLE_MAX_LIMIT,
+  RIGHT_ELBOW_ANGLE_MIN_LIMIT,
+  RIGHT_KNEE_ANGLE_MAX_LIMIT,
+  RIGHT_KNEE_ANGLE_MIN_LIMIT,
+} from '../../lib/pose-detection/constants'
+import { calculateAngle } from '../../lib/pose-detection/utils'
 
 // const detectorConfig = { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING }
 
