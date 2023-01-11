@@ -1,12 +1,15 @@
 {
-  "name": "kinesis-ts",
+  "name": "camera-sizing-automation-poc",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "homepage": "https://doris-mobi.github.io/camera-sizing-automation-poc",
   "scripts": {
     "start": "HTTPS=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "dependencies": {
     "@mediapipe/pose": "^0.5.1635988162",
@@ -36,6 +39,7 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-jest": "^27.2.1",
     "eslint-plugin-prettier": "^4.2.1",
+    "gh-pages": "^4.0.0",
     "prettier": "^2.8.2"
   },
   "browserslist": {
