@@ -1,18 +1,18 @@
-.gradient {
+.pose-status-container {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: 0;
+  top: 0;
   height: 200px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0));
 }
 
 .pose-status {
   position: relative;
-  top: 30px;
+  bottom: 30px;
   font-size: 40px;
   text-align: center;
 }
@@ -32,4 +32,27 @@
   object-fit: cover;
   z-index: 0;
   background-color: black;
+}
+
+.switch-camera-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.switch-camera {
+  appearance: none;
+  border: 0;
+  background-color: white;
+  padding: 8px 18px;
+  border-radius: 16px;
+  font-weight: bold;
+  font-size: 14px;
+  color: black;
+  cursor: pointer;
 }
