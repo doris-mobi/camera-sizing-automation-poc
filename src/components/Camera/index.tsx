@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/media-has-caption */
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-// import * as poseDetection from '@tensorflow-models/pose-detection'
-// import * as tf from '@tensorflow/tfjs-core'
-// import '@tensorflow/tfjs-backend-webgl'
+import * as poseDetection from '@tensorflow-models/pose-detection'
+import * as tf from '@tensorflow/tfjs-core'
+import '@tensorflow/tfjs-backend-webgl'
 
 import './styles.css'
 
@@ -23,7 +23,7 @@ import {
 } from '../../lib/pose-detection/constants'
 import { calculateAngle } from '../../lib/pose-detection/utils'
 
-// const detectorConfig = { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING }
+const detectorConfig = { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING }
 
 export const Camera: React.FC = () => {
   const [poseValid, setPoseValid] = useState(false)
@@ -31,84 +31,84 @@ export const Camera: React.FC = () => {
 
   const videoRef = useRef<HTMLVideoElement>(null)
 
-  // const validatePose = useCallback(async (detector: poseDetection.PoseDetector) => {
-  //   const video = videoRef.current
+  const validatePose = useCallback(async (detector: poseDetection.PoseDetector) => {
+    const video = videoRef.current
 
-  //   if (!video) return
+    if (!video) return
 
-  //   const poses = await detector.estimatePoses(video)
-  //   if (!poses.length) return
+    const poses = await detector.estimatePoses(video)
+    if (!poses.length) return
 
-  //   const pose = poses[0]
+    const pose = poses[0]
 
-  //   const leftElbowAngle = calculateAngle(
-  //     pose.keypoints[poseLandmarks.LEFT_SHOULDER],
-  //     pose.keypoints[poseLandmarks.LEFT_ELBOW],
-  //     pose.keypoints[poseLandmarks.LEFT_WRIST],
-  //   )
+    const leftElbowAngle = calculateAngle(
+      pose.keypoints[poseLandmarks.LEFT_SHOULDER],
+      pose.keypoints[poseLandmarks.LEFT_ELBOW],
+      pose.keypoints[poseLandmarks.LEFT_WRIST],
+    )
 
-  //   const rightElbowAngle = calculateAngle(
-  //     pose.keypoints[poseLandmarks.RIGHT_SHOULDER],
-  //     pose.keypoints[poseLandmarks.RIGHT_ELBOW],
-  //     pose.keypoints[poseLandmarks.RIGHT_WRIST],
-  //   )
+    const rightElbowAngle = calculateAngle(
+      pose.keypoints[poseLandmarks.RIGHT_SHOULDER],
+      pose.keypoints[poseLandmarks.RIGHT_ELBOW],
+      pose.keypoints[poseLandmarks.RIGHT_WRIST],
+    )
 
-  //   const leftShoulderAngle = calculateAngle(
-  //     pose.keypoints[poseLandmarks.LEFT_ELBOW],
-  //     pose.keypoints[poseLandmarks.LEFT_SHOULDER],
-  //     pose.keypoints[poseLandmarks.LEFT_HIP],
-  //   )
+    const leftShoulderAngle = calculateAngle(
+      pose.keypoints[poseLandmarks.LEFT_ELBOW],
+      pose.keypoints[poseLandmarks.LEFT_SHOULDER],
+      pose.keypoints[poseLandmarks.LEFT_HIP],
+    )
 
-  //   const leftKneeAngle = calculateAngle(
-  //     pose.keypoints[poseLandmarks.LEFT_HIP],
-  //     pose.keypoints[poseLandmarks.LEFT_KNEE],
-  //     pose.keypoints[poseLandmarks.LEFT_ANKLE],
-  //   )
+    const leftKneeAngle = calculateAngle(
+      pose.keypoints[poseLandmarks.LEFT_HIP],
+      pose.keypoints[poseLandmarks.LEFT_KNEE],
+      pose.keypoints[poseLandmarks.LEFT_ANKLE],
+    )
 
-  //   const rightKneeAngle = calculateAngle(
-  //     pose.keypoints[poseLandmarks.RIGHT_HIP],
-  //     pose.keypoints[poseLandmarks.RIGHT_KNEE],
-  //     pose.keypoints[poseLandmarks.RIGHT_ANKLE],
-  //   )
+    const rightKneeAngle = calculateAngle(
+      pose.keypoints[poseLandmarks.RIGHT_HIP],
+      pose.keypoints[poseLandmarks.RIGHT_KNEE],
+      pose.keypoints[poseLandmarks.RIGHT_ANKLE],
+    )
 
-  //   if (leftElbowAngle < LEFT_ELBOW_ANGLE_MIN_LIMIT || leftElbowAngle > LEFT_ELBOW_ANGLE_MAX_LIMIT) {
-  //     setPoseValid(false)
-  //     return
-  //   }
+    if (leftElbowAngle < LEFT_ELBOW_ANGLE_MIN_LIMIT || leftElbowAngle > LEFT_ELBOW_ANGLE_MAX_LIMIT) {
+      setPoseValid(false)
+      return
+    }
 
-  //   if (rightElbowAngle < RIGHT_ELBOW_ANGLE_MIN_LIMIT || rightElbowAngle > RIGHT_ELBOW_ANGLE_MAX_LIMIT) {
-  //     setPoseValid(false)
-  //     return
-  //   }
+    if (rightElbowAngle < RIGHT_ELBOW_ANGLE_MIN_LIMIT || rightElbowAngle > RIGHT_ELBOW_ANGLE_MAX_LIMIT) {
+      setPoseValid(false)
+      return
+    }
 
-  //   if (leftShoulderAngle < LEFT_SHOULDER_ANGLE_MIN_LIMIT || leftShoulderAngle > LEFT_SHOULDER_ANGLE_MAX_LIMIT) {
-  //     setPoseValid(false)
-  //     return
-  //   }
+    if (leftShoulderAngle < LEFT_SHOULDER_ANGLE_MIN_LIMIT || leftShoulderAngle > LEFT_SHOULDER_ANGLE_MAX_LIMIT) {
+      setPoseValid(false)
+      return
+    }
 
-  //   if (leftKneeAngle < LEFT_KNEE_ANGLE_MIN_LIMIT || leftKneeAngle > LEFT_KNEE_ANGLE_MAX_LIMIT) {
-  //     setPoseValid(false)
-  //     return
-  //   }
+    if (leftKneeAngle < LEFT_KNEE_ANGLE_MIN_LIMIT || leftKneeAngle > LEFT_KNEE_ANGLE_MAX_LIMIT) {
+      setPoseValid(false)
+      return
+    }
 
-  //   if (rightKneeAngle < RIGHT_KNEE_ANGLE_MIN_LIMIT || rightKneeAngle > RIGHT_KNEE_ANGLE_MAX_LIMIT) {
-  //     setPoseValid(false)
-  //     return
-  //   }
+    if (rightKneeAngle < RIGHT_KNEE_ANGLE_MIN_LIMIT || rightKneeAngle > RIGHT_KNEE_ANGLE_MAX_LIMIT) {
+      setPoseValid(false)
+      return
+    }
 
-  //   setPoseValid(true)
-  // }, [])
+    setPoseValid(true)
+  }, [])
 
-  // const runPoseNet = useCallback(async () => {
-  //   const detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, detectorConfig)
+  const runPoseNet = useCallback(async () => {
+    const detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, detectorConfig)
 
-  //   setInterval(() => {
-  //     validatePose(detector)
-  //   }, 1000 / 30)
-  // }, [validatePose])
+    setInterval(() => {
+      validatePose(detector)
+    }, 1000 / 30)
+  }, [validatePose])
 
   const initializeCamera = useCallback(async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
 
     if (!videoRef.current) return
 
@@ -116,8 +116,8 @@ export const Camera: React.FC = () => {
 
     playVideo(videoRef.current)
 
-    // runPoseNet()
-  }, [])
+    runPoseNet()
+  }, [runPoseNet])
 
   useEffect(() => {
     initializeCamera()
@@ -131,7 +131,7 @@ export const Camera: React.FC = () => {
             {poseValid ? 'Pose válida 😎' : 'Pose inválida 🤬'}
           </h1>
         </div>
-        <video id="camera" ref={videoRef} />
+        <video id="camera" ref={videoRef} muted autoPlay playsInline />
       </div>
     </>
   )
