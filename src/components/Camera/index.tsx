@@ -8,22 +8,12 @@ import '@tensorflow/tfjs-backend-webgl'
 import './styles.css'
 
 import { playVideo } from './playVideo'
-import {
-  LEFT_ELBOW_ANGLE_MAX_LIMIT,
-  LEFT_ELBOW_ANGLE_MIN_LIMIT,
-  LEFT_KNEE_ANGLE_MAX_LIMIT,
-  LEFT_KNEE_ANGLE_MIN_LIMIT,
-  LEFT_SHOULDER_ANGLE_MAX_LIMIT,
-  LEFT_SHOULDER_ANGLE_MIN_LIMIT,
-  poseLandmarks,
-  RIGHT_ELBOW_ANGLE_MAX_LIMIT,
-  RIGHT_ELBOW_ANGLE_MIN_LIMIT,
-  RIGHT_KNEE_ANGLE_MAX_LIMIT,
-  RIGHT_KNEE_ANGLE_MIN_LIMIT,
-} from '../../lib/pose-detection/constants'
-import { calculateAngle } from '../../lib/pose-detection/utils'
+
+import { PoseValidation } from '../../helpers/pose-validation'
 
 const detectorConfig = { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING }
+
+const poseValidation = new PoseValidation()
 
 export const Camera: React.FC = () => {
   const [poseValid, setPoseValid] = useState(false)
@@ -41,66 +31,10 @@ export const Camera: React.FC = () => {
     video.height = video.videoHeight
 
     const poses = await detector.estimatePoses(video)
+
     if (!poses.length) return
 
-    const pose = poses[0]
-
-    const leftElbowAngle = calculateAngle(
-      pose.keypoints[poseLandmarks.LEFT_SHOULDER],
-      pose.keypoints[poseLandmarks.LEFT_ELBOW],
-      pose.keypoints[poseLandmarks.LEFT_WRIST],
-    )
-
-    const rightElbowAngle = calculateAngle(
-      pose.keypoints[poseLandmarks.RIGHT_SHOULDER],
-      pose.keypoints[poseLandmarks.RIGHT_ELBOW],
-      pose.keypoints[poseLandmarks.RIGHT_WRIST],
-    )
-
-    const leftShoulderAngle = calculateAngle(
-      pose.keypoints[poseLandmarks.LEFT_ELBOW],
-      pose.keypoints[poseLandmarks.LEFT_SHOULDER],
-      pose.keypoints[poseLandmarks.LEFT_HIP],
-    )
-
-    const leftKneeAngle = calculateAngle(
-      pose.keypoints[poseLandmarks.LEFT_HIP],
-      pose.keypoints[poseLandmarks.LEFT_KNEE],
-      pose.keypoints[poseLandmarks.LEFT_ANKLE],
-    )
-
-    const rightKneeAngle = calculateAngle(
-      pose.keypoints[poseLandmarks.RIGHT_HIP],
-      pose.keypoints[poseLandmarks.RIGHT_KNEE],
-      pose.keypoints[poseLandmarks.RIGHT_ANKLE],
-    )
-
-    if (leftElbowAngle < LEFT_ELBOW_ANGLE_MIN_LIMIT || leftElbowAngle > LEFT_ELBOW_ANGLE_MAX_LIMIT) {
-      setPoseValid(false)
-      return
-    }
-
-    if (rightElbowAngle < RIGHT_ELBOW_ANGLE_MIN_LIMIT || rightElbowAngle > RIGHT_ELBOW_ANGLE_MAX_LIMIT) {
-      setPoseValid(false)
-      return
-    }
-
-    if (leftShoulderAngle < LEFT_SHOULDER_ANGLE_MIN_LIMIT || leftShoulderAngle > LEFT_SHOULDER_ANGLE_MAX_LIMIT) {
-      setPoseValid(false)
-      return
-    }
-
-    if (leftKneeAngle < LEFT_KNEE_ANGLE_MIN_LIMIT || leftKneeAngle > LEFT_KNEE_ANGLE_MAX_LIMIT) {
-      setPoseValid(false)
-      return
-    }
-
-    if (rightKneeAngle < RIGHT_KNEE_ANGLE_MIN_LIMIT || rightKneeAngle > RIGHT_KNEE_ANGLE_MAX_LIMIT) {
-      setPoseValid(false)
-      return
-    }
-
-    setPoseValid(true)
+    setPoseValid(poseValidation.validatePose('FRONT_WITH_UP_ARMS', poses[0]))
   }, [])
 
   const runPoseNet = useCallback(async () => {
