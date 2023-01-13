@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/media-has-caption */
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, ChangeEventHandler, EventHandler, useCallback, useEffect, useRef, useState } from 'react'
 import * as poseDetection from '@tensorflow-models/pose-detection'
 import * as tf from '@tensorflow/tfjs-core'
 import '@tensorflow/tfjs-backend-webgl'
@@ -10,24 +11,29 @@ import './styles.css'
 import { playVideo } from './playVideo'
 
 import { PoseValidation } from '../../helpers/pose-validation'
-import { PoseType } from '../../helpers/pose-validation/types'
-
-const detectorConfig = { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING }
+import { Pose, PoseType } from '../../helpers/pose-validation/types'
+import { MovenetDetector } from '../../helpers/movenet-detector'
 
 const poseValidation = new PoseValidation()
+const movenetDetector = new MovenetDetector()
 
 export const Camera: React.FC = () => {
   const [poseValid, setPoseValid] = useState(false)
   const [facingMode, setFacingMode] = useState<'user' | 'enviroment'>('user')
   const [selectedPose, setSelectedPose] = useState<PoseType>('FRONT')
-  const [countCameras, setCountCameras] = useState(0)
+
+  const mountedRef = useRef(false)
 
   const videoRef = useRef<HTMLVideoElement>(null)
+  const streamRef = useRef<MediaStream>()
+  const intervalRef = useRef<NodeJS.Timer>()
+  const detectorRef = useRef<poseDetection.PoseDetector>()
 
-  const validatePose = useCallback(async (detector: poseDetection.PoseDetector) => {
+  const validatePose = useCallback(async () => {
     const video = videoRef.current
+    const detector = detectorRef.current
 
-    if (!video) return
+    if (!video || !detector) return
 
     video.width = video.videoWidth
     video.height = video.videoHeight
@@ -36,27 +42,16 @@ export const Camera: React.FC = () => {
 
     if (!poses.length) return
 
-    setPoseValid(poseValidation.validatePose('FRONT', poses[0]))
+    setPoseValid(poseValidation.validatePose(poses[0]))
   }, [])
 
   const runPoseNet = useCallback(async () => {
-    const detector = await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, detectorConfig)
-
-    setInterval(() => {
-      validatePose(detector)
+    intervalRef.current = setInterval(() => {
+      validatePose()
     }, 1000)
   }, [validatePose])
 
-  const getCameras = useCallback(async () => {
-    const mediaDeviceInfo = await navigator.mediaDevices.enumerateDevices()
-    const { length } = mediaDeviceInfo.filter(({ kind }) => kind === 'videoinput')
-
-    setCountCameras(length)
-  }, [])
-
   const initializeCamera = useCallback(async () => {
-    await getCameras()
-
     const stream = await navigator.mediaDevices.getUserMedia({
       video: {
         facingMode,
@@ -65,22 +60,33 @@ export const Camera: React.FC = () => {
       },
     })
 
+    streamRef.current = stream
+
     if (!videoRef.current) return
 
-    videoRef.current.srcObject = stream
+    videoRef.current.srcObject = streamRef.current
 
     playVideo(videoRef.current)
 
     runPoseNet()
-  }, [facingMode, getCameras, runPoseNet])
+  }, [facingMode, runPoseNet])
 
-  const handleSwitchCamera = useCallback(() => {
-    if (videoRef.current) setFacingMode(oldFacingMode => (oldFacingMode === 'user' ? 'enviroment' : 'user'))
+  const handleChangePose = useCallback((value: PoseType) => {
+    poseValidation.poseType = value
+    setSelectedPose(value)
   }, [])
 
   useEffect(() => {
+    if (mountedRef.current) return
+
+    mountedRef.current = true
+
     initializeCamera()
-  }, [initializeCamera, facingMode])
+
+    movenetDetector.initialize().then(() => {
+      return (detectorRef.current = movenetDetector.poseDetector!)
+    })
+  }, [initializeCamera, selectedPose])
 
   return (
     <>
@@ -93,23 +99,16 @@ export const Camera: React.FC = () => {
 
         <video id="camera" ref={videoRef} autoPlay playsInline />
         <div className="switch-pose-container">
-          <button className="front-pose" onClick={() => setSelectedPose('FRONT')}>
-            Front Pose
-          </button>
-          <button className="front-pose-with-up-arms" onClick={() => setSelectedPose('FRONT_WITH_UP_ARMS')}>
-            Up Arms Pose
-          </button>
-          <button className="side-pose" onClick={() => setSelectedPose('SIDE')}>
-            Side Pose
-          </button>
+          <select
+            name="change-pose"
+            id="change-pose"
+            onChange={event => handleChangePose(event.target.value as PoseType)}
+          >
+            <option value="FRONT">Front Pose</option>
+            <option value="FRONT_WITH_UP_ARMS">Up Arms Pose</option>
+            <option value="SIDE">Side Pose</option>
+          </select>
         </div>
-        {countCameras > 1 && (
-          <div className="switch-camera-container">
-            <button className="switch-camera" onClick={handleSwitchCamera}>
-              VIRAR CAMERA 🔄
-            </button>
-          </div>
-        )}
       </div>
     </>
   )

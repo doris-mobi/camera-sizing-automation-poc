@@ -6,12 +6,18 @@ import { PoseType, Pose, Keypoint } from './types'
 
 export class PoseValidation {
   private _pose: Pose
+  private _poseType: PoseType = 'FRONT'
 
   constructor() {
     this._pose = { keypoints: [] }
   }
 
-  validatePose(poseType: PoseType, pose: Pose) {
+  set poseType(value: PoseType) {
+    this._poseType = value
+  }
+
+
+  validatePose(pose: Pose) {
     this._pose = pose
 
     const poseMap = {
@@ -20,7 +26,7 @@ export class PoseValidation {
       SIDE: () => this._validateSidePose(),
     }
 
-    return poseMap[poseType]()
+    return poseMap[this._poseType]()
   }
 
   private _toDegrees(angle: number) {
@@ -250,9 +256,9 @@ export class PoseValidation {
 
   private _validateFrontWithUpArmsPose() {
     if (
-      !this._checkIfLeftElbowAngleIsValid() ||
-      !this._checkIfRightElbowAngleIsValid() ||
-      !this._checkIfLeftShoulderAngleIsValid() ||
+      // !this._checkIfLeftElbowAngleIsValid() ||
+      // !this._checkIfRightElbowAngleIsValid() ||
+      // !this._checkIfLeftShoulderAngleIsValid() ||
       !this._checkIfLeftKneeAngleIsValid() ||
       !this._checkIfRightKneeAngleIsValid() ||
       !this._checkIfDistanceBetweenArmsAndHipIsValid()
