@@ -34,12 +34,36 @@
   background-color: black;
 }
 
+.switch-pose-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.switch-pose-container button {
+  appearance: none;
+  border: 0;
+  background-color: white;
+  padding: 8px 18px;
+  border-radius: 16px;
+  font-weight: bold;
+  font-size: 10px;
+  color: black;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
 .switch-camera-container {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 100px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;

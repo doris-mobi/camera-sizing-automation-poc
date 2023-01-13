@@ -10,6 +10,7 @@ import './styles.css'
 import { playVideo } from './playVideo'
 
 import { PoseValidation } from '../../helpers/pose-validation'
+import { PoseType } from '../../helpers/pose-validation/types'
 
 const detectorConfig = { modelType: poseDetection.movenet.modelType.SINGLEPOSE_LIGHTNING }
 
@@ -18,6 +19,7 @@ const poseValidation = new PoseValidation()
 export const Camera: React.FC = () => {
   const [poseValid, setPoseValid] = useState(false)
   const [facingMode, setFacingMode] = useState<'user' | 'enviroment'>('user')
+  const [selectedPose, setSelectedPose] = useState<PoseType>('FRONT')
   const [countCameras, setCountCameras] = useState(0)
 
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -34,7 +36,7 @@ export const Camera: React.FC = () => {
 
     if (!poses.length) return
 
-    setPoseValid(poseValidation.validatePose('FRONT_WITH_UP_ARMS', poses[0]))
+    setPoseValid(poseValidation.validatePose('FRONT', poses[0]))
   }, [])
 
   const runPoseNet = useCallback(async () => {
@@ -90,6 +92,17 @@ export const Camera: React.FC = () => {
         </div>
 
         <video id="camera" ref={videoRef} autoPlay playsInline />
+        <div className="switch-pose-container">
+          <button className="front-pose" onClick={() => setSelectedPose('FRONT')}>
+            Front Pose
+          </button>
+          <button className="front-pose-with-up-arms" onClick={() => setSelectedPose('FRONT_WITH_UP_ARMS')}>
+            Up Arms Pose
+          </button>
+          <button className="side-pose" onClick={() => setSelectedPose('SIDE')}>
+            Side Pose
+          </button>
+        </div>
         {countCameras > 1 && (
           <div className="switch-camera-container">
             <button className="switch-camera" onClick={handleSwitchCamera}>
