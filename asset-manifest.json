@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/camera-sizing-automation-poc/static/css/main.e7b6ec6e.css",
-    "main.js": "/camera-sizing-automation-poc/static/js/main.83baf5b1.js",
+    "main.css": "/camera-sizing-automation-poc/static/css/main.64a25643.css",
+    "main.js": "/camera-sizing-automation-poc/static/js/main.7ed04fc3.js",
     "index.html": "/camera-sizing-automation-poc/index.html",
-    "main.e7b6ec6e.css.map": "/camera-sizing-automation-poc/static/css/main.e7b6ec6e.css.map",
-    "main.83baf5b1.js.map": "/camera-sizing-automation-poc/static/js/main.83baf5b1.js.map"
+    "main.64a25643.css.map": "/camera-sizing-automation-poc/static/css/main.64a25643.css.map",
+    "main.7ed04fc3.js.map": "/camera-sizing-automation-poc/static/js/main.7ed04fc3.js.map"
   },
   "entrypoints": [
-    "static/css/main.e7b6ec6e.css",
-    "static/js/main.83baf5b1.js"
+    "static/css/main.64a25643.css",
+    "static/js/main.7ed04fc3.js"
   ]
 }
